@@ -20,3 +20,21 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+
+
+# .gitignore NetBeans Gradle projects
+# NetBeans
+.nb-gradle/
+
+# Gradle files
+.gradle/
+
+#Gradle build files (also jetty-runner)
+build/
+
+#Webapp runner (Tomcat) build files
+target/
+
+#Log files
+logs/
