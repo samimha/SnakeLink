@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <style>
+        #controls {
+            display: flex;
+            flex-wrap: wrap;
+            width: 200px;
+            height: 50px;
+        }
+
+
+        #up,
+        #down {
+            width: 100%;
+            height: 100%;
+        }
+
+        #left,
+        #right {
+            width: 100%;
+            height: 100%;
+        }
+
+
+        .grid-container {
+            display: grid;
+            width: 100px;
+            grid-gap: 5px;
+            padding: 5px;
+        }
+
+        .grid-item {
+            text-align: center;
+            padding: 5px;
+        }
+
+        .up {
+            grid-column: 2;
+            grid-row: 1;
+            width: 100%;
+            height: 100%;
+        }
+
+        .left {
+            grid-column: 1;
+            grid-row: 2;
+            width: 100%;
+            height: 100%;
+        }
+
+        .right {
+            grid-column: 3;
+            grid-row: 2;
+            width: 100%;
+            height: 100%;
+        }
+
+        .center {
+            grid-column: 2;
+            grid-row: 2;
+            width: 100%;
+            height: 100%;
+        }
+
+        .down {
+            grid-column: 2;
+            grid-row: 3;
+            width: 100%;
+            height: 100%;
+        }
+
+        .item {
+            grid-column: 4;
+            grid-row: 1 /span 3;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        button {
+            border: 1px white solid;
+            background-color: black;
+            color: white;
+            border-radius: 2px;
+            font-family: 'Orbitron', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid-container">
+        <div class="grid-item up">
+            <button id="up">^</button>
+        </div>
+        <div class="grid-item left">
+            <button id="left">
+                <</button>
+        </div>
+        <div class="grid-item center"></div>
+        <div class="grid-item right">
+            <button id="right">></button>
+        </div>
+        <div class="grid-item down">
+            <button id="down">v</button>
+        </div>
+        <div class="grid-item item">
+            <h3>Hit</h3>
+            <p id="hit"></p>
+            
+        </div>
+    </div>
+    <script>
+        const up = document.querySelector("#up");
+        const down = document.querySelector("#down");
+        const left = document.querySelector("#left");
+        const right = document.querySelector("#right");
+        const hit = document.querySelector("#hit");
+        down.addEventListener('click', function (e) {
+            hit.textContent = "down";
+        });
+        //ylös
+        up.addEventListener('click', function (e) {
+            hit.textContent = "up";
+        });
+        //oikea
+        right.addEventListener('click', function (e) {
+            hit.textContent = "right";
+        });
+        //vasen
+        left.addEventListener('click', function (e) {
+            hit.textContent = "left";
+        });
+    </script>
+</body>
+
+</html>
