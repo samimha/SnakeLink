@@ -10,38 +10,45 @@
             width: 200px;
             height: 50px;
         }
+
         #up,
         #down {
             width: 100%;
             height: 100%;
         }
+
         #left,
         #right {
             width: 100%;
             height: 100%;
         }
+
         .grid-container {
             display: grid;
             width: 100px;
             grid-gap: 5px;
             padding: 5px;
         }
+
         .grid-item {
             text-align: center;
             padding: 5px;
         }
+
         .up {
             grid-column: 2;
             grid-row: 1;
             width: 100%;
             height: 100%;
         }
+
         .left {
             grid-column: 1;
             grid-row: 2;
             width: 100%;
             height: 100%;
         }
+
         .right {
             grid-column: 3;
             grid-row: 2;
@@ -71,6 +78,7 @@
             display: flex;
             justify-content: space-around;
         }
+
         button {
             border: 1px white solid;
             background-color: black;
@@ -100,29 +108,39 @@
         <div class="grid-item item">
             <h3>Hit</h3>
             <p id="hit"></p>
-            
+
         </div>
     </div>
     <script>
-        const up = document.querySelector("#up");
-        const down = document.querySelector("#down");
-        const left = document.querySelector("#left");
-        const right = document.querySelector("#right");
-        const hit = document.querySelector("#hit");
-        down.addEventListener('click', function (e) {
-            hit.textContent = "down";
-        });
-        //ylös
-        up.addEventListener('click', function (e) {
-            hit.textContent = "up";
-        });
-        //oikea
-        right.addEventListener('click', function (e) {
-            hit.textContent = "right";
-        });
-        //vasen
-        left.addEventListener('click', function (e) {
-            hit.textContent = "left";
+        document.addEventListener("DOMContentLoaded", function (event) {
+            const up = document.querySelector("#up");
+            const down = document.querySelector("#down");
+            const left = document.querySelector("#left");
+            const right = document.querySelector("#right");
+            const hit = document.querySelector("#hit");
+            const socet = new WebSocket("ws://localhost:8080/Websocket/actions");
+            socet.addEventListener("message",function(e){
+                hit.textContent = e.data;
+            });
+            down.addEventListener('click', function (e) {
+                //hit.textContent = "down";
+                socet.send("1-down");
+            });
+            //ylös
+            up.addEventListener('click', function (e) {
+                //hit.textContent = "up";
+                socet.send("1-up");
+            });
+            //oikea
+            right.addEventListener('click', function (e) {
+                //hit.textContent = "right";
+                socet.send("1-right");
+            });
+            //vasen
+            left.addEventListener('click', function (e) {
+                //hit.textContent = "left";
+                socet.send("1-left");
+            });
         });
     </script>
 </body>
