@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     let url = document.location.href.split("/");
     url[4] = "actions";
     //let wsUrl = url[2]+"/"+url[3]+"/"+url[4];
-    let wsUrl = "https://snake-link.herokuapp.com/SnakeLink/actions";
+    let wsUrl = "snake-link.herokuapp.com/SnakeLink/actions";
     console.log(wsUrl);
     const socket = new WebSocket("wss:"+wsUrl);
     const canvas = document.querySelector('#game');
