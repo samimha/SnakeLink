@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css?family=Orbitron');
+body {
+    font-family: 'Orbitron', sans-serif;
+    background: black;
+    /*display: flex;*/
+    align-items: center;
+    justify-content: center;
+    color: aliceblue;
+}
+
+canvas {
+    border: 1px solid white;
+    display: block;
+    padding: 10px;
+}
+
+#controls {
+    display: flex;
+    flex-wrap: wrap;
+    width: 200px;
+    height: 50px;
+}
+
+#up, #down {
+    width: 100%;
+    height: 100%;
+}
+
+#left, #right {
+    width: 100%;
+    height: 100%;
+}
+
+.grid-container {
+    display: grid;
+    width: 100px;
+    grid-gap: 5px;
+    padding: 5px;
+}
+
+.grid-item {
+    text-align: center;
+    padding: 5px;
+}
+
+.up {
+    grid-column: 2;
+    grid-row: 1;
+    width: 100%;
+    height: 100%;
+}
+
+.left {
+    grid-column: 1;
+    grid-row: 2;
+    width: 100%;
+    height: 100%;
+}
+
+.right {
+    grid-column: 3;
+    grid-row: 2;
+    width: 100%;
+    height: 100%;
+}
+
+.center {
+    grid-column: 2;
+    grid-row: 2;
+    width: 100%;
+    height: 100%;
+}
+
+.down {
+    grid-column: 2;
+    grid-row: 3;
+    width: 100%;
+    height: 100%;
+}
+
+.item {
+    grid-column: 4;
+    grid-row: 1 /span 3;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+li {
+    list-style: none;
+    padding: 10px;
+}
+
+a:link {
+    color: white;
+    background-color: blue;
+    text-decoration: none;
+    padding: 3px;
+    border: 2px solid blue;
+    border-radius: 3px;
+}
+a:visited {
+    color: white;
+    background-color: blue;
+    text-decoration: none;
+    padding: 3px;
+    border: 2px solid blue;
+    border-radius: 3px;
+}
+
+a:hover {
+    background-color: white;
+    color: black;
+}
+
+button {
+    border: 1px white solid;
+    background-color: black;
+    color: white;
+    border-radius: 2px;
+    font-family: 'Orbitron', sans-serif;
+}
