@@ -15,6 +15,7 @@ import javax.websocket.Session;
 public class SessionHandler {
     private final Set<Session> sessions = new HashSet<>();
     //private final Set<Device> devices = new HashSet<>();
+    private final Set<Session> hosts = new HashSet<>();
     
     public void addSession(Session session) {
         sessions.add(session);
@@ -24,6 +25,20 @@ public class SessionHandler {
     public void removeSession(Session session) {
         System.out.println("----------------------Session removed: "+ session.getId());
         sessions.remove(session);
+    }
+    public void connectHost(Session session){
+        hosts.add(session);
+        System.out.println("------------------------host added: "+session.getId());
+    }
+    
+    public void sendControllerCommand(String command){
+        try{
+        hosts.iterator().next().getBasicRemote().sendText(command);
+            System.out.println("---------------------Message send to host: "+command);
+        }catch(IOException ex) {
+            
+            Logger.getLogger(SessionHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void sendToSession(Session session, String message) {

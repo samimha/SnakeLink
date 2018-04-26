@@ -23,7 +23,7 @@ public class WebSocketServer {
     
      @OnOpen
         public void open(Session session) {
-            System.out.println("---------------------------------------Opening Session:" + session.getId());
+            System.out.println("---------------------------------------Opening Session: " + session.getId());
             
             sessionHandler.addSession(session);
     }
@@ -31,7 +31,7 @@ public class WebSocketServer {
     @OnClose
         public void close(Session session) {
             sessionHandler.removeSession(session);
-            System.out.println("---------------------------------------Closing Session"+ session.getId());
+            System.out.println("---------------------------------------Closing Session: "+ session.getId());
     }
 
     @OnError
@@ -42,12 +42,12 @@ public class WebSocketServer {
     @OnMessage
         public void handleMessage(String message, Session session) {
             System.out.println("--------------------------------------Message from: "+session.getId());
-            try {
-            session.getBasicRemote().sendText(message);
-        } catch (IOException ex) {
-            
-            Logger.getLogger(SessionHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            if(message.equals("host")){
+                sessionHandler.connectHost(session);
+            }else{
+                sessionHandler.sendControllerCommand(message);
+            }
+//            session.getBasicRemote().sendText(message);
             System.out.println("moro");
     }
 }
