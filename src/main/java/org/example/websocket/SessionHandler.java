@@ -18,9 +18,11 @@ public class SessionHandler {
     
     public void addSession(Session session) {
         sessions.add(session);
+        System.out.println("-----------------------Session added: "+ session.getId());
     }
 
     public void removeSession(Session session) {
+        System.out.println("----------------------Session removed: "+ session.getId());
         sessions.remove(session);
     }
     
