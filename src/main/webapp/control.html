@@ -35,9 +35,9 @@
             const left = document.querySelector("#left");
             const right = document.querySelector("#right");
             const hit = document.querySelector("#hit");
-            const id;
+            let id;
             const socket = new WebSocket("ws://localhost:8080/SnakeLink/actions");
-            socke.addEventListener("message", function (e) {
+            socket.addEventListener("message", function (e) {
                 id = e.data;
             })
 
