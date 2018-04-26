@@ -7,16 +7,9 @@
 
  plugins {
     id 'war'
-    id 'java'
-	
-    id 'org.akhikhl.gretty' version '1.4.2'
+    id 'java'	
+    //id 'org.akhikhl.gretty' version '1.4.2'
  }
-
- repositories {
-    jcenter()
-    mavenCentral()
-}
-
 
 //Include the jetty runner into the build/server folder
 task copyToLib(type: Copy) {
@@ -37,11 +30,15 @@ war.mustRunAfter clean
 
 
 dependencies {
+    compileOnly 'org.eclipse.jetty:jetty-runner:9.4.9.v20180320'
 	providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
 	providedCompile group: 'javax.enterprise', name: 'cdi-api', version: '1.1.EDR1'
 	providedCompile group: 'javax.websocket', name: 'javax.websocket-api', version: '1.1'
 	providedCompile group: 'javax.inject', name: 'javax.inject', version: '1'
+}
 
-    compileOnly 'org.eclipse.jetty:jetty-runner:9.4.9.v20180320'
-	
+
+ repositories {
+    jcenter()
+    mavenCentral()
 }

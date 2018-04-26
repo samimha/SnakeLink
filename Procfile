@@ -1,2 +1,1 @@
-web: java -jar build/server/jetty-runner.jar --port $PORT
- 	 build/libs/SnakeLink.war
+web: java -jar build/server/jetty-runner.jar --port $PORT build/libs/SnakeLink.war
