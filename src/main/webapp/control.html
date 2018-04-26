@@ -118,7 +118,7 @@
             const left = document.querySelector("#left");
             const right = document.querySelector("#right");
             const hit = document.querySelector("#hit");
-            const socet = new WebSocket("ws://localhost:8080/Websocket/actions");
+            const socet = new WebSocket("ws://localhost:8080/SnakeLink/actions");
             socet.addEventListener("message",function(e){
                 hit.textContent = e.data;
             });
