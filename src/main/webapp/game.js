@@ -1,5 +1,9 @@
 document.addEventListener("DOMContentLoaded", function (event) {
-    const socket = new WebSocket("ws://localhost:8080/SnakeLink/actions");
+    let url = document.location.href.split("/");
+    url[4] = "actions";
+    let wsUrl = url[2]+"/"+url[3]+"/"+url[4];
+    console.log(wsUrl);
+    const socket = new WebSocket("ws:"+wsUrl);
     const canvas = document.querySelector('#game');
     var context = canvas.getContext('2d');
     socket.addEventListener("open", function (e) {
