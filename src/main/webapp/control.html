@@ -35,28 +35,26 @@
             const left = document.querySelector("#left");
             const right = document.querySelector("#right");
             const hit = document.querySelector("#hit");
-            const socet = new WebSocket("ws://localhost:8080/SnakeLink/actions");
-            socet.addEventListener("message",function(e){
-                hit.textContent = e.data;
-            });
+            const socket = new WebSocket("ws://localhost:8080/SnakeLink/actions");
+            
             down.addEventListener('click', function (e) {
                 //hit.textContent = "down";
-                socet.send("1-down");
+                socket.send("1-down");
             });
             //ylös
             up.addEventListener('click', function (e) {
                 //hit.textContent = "up";
-                socet.send("1-up");
+                socket.send("1-up");
             });
             //oikea
             right.addEventListener('click', function (e) {
                 //hit.textContent = "right";
-                socet.send("1-right");
+                socket.send("1-right");
             });
             //vasen
             left.addEventListener('click', function (e) {
                 //hit.textContent = "left";
-                socet.send("1-left");
+                socket.send("1-left");
             });
         });
     </script>
