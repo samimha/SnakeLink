@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         apple.x = getRandomInt(0, 25) * grid;
         apple.y = getRandomInt(0, 25) * grid;
     }
-    socet.addEventListener("message",function(e){
+    socket.addEventListener("message",function(e){
         if (event.defaultPrevented) {
             return; // Do nothing if the event was already processed
         }
