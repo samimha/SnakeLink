@@ -18,7 +18,7 @@ import javax.websocket.Session;
 @ApplicationScoped
 @ServerEndpoint("/actions")
 public class WebSocketServer {
-    
+    static int pelaaja=0;
     private SessionHandler sessionHandler = new SessionHandler();
     
      @OnOpen
@@ -26,6 +26,14 @@ public class WebSocketServer {
             System.out.println("---------------------------------------Opening Session: " + session.getId());
             
             sessionHandler.addSession(session);
+            try{
+            session.getBasicRemote().sendText(""+pelaaja);
+                System.out.println("---------------------------------Connected as player "+pelaaja);
+            pelaaja++;
+            }catch (IOException ex) {
+            
+            Logger.getLogger(SessionHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @OnClose
@@ -44,7 +52,9 @@ public class WebSocketServer {
             System.out.println("--------------------------------------Message from: "+session.getId());
             if(message.equals("host")){
                 sessionHandler.connectHost(session);
+                System.out.println("--------------------------------Host request send from "+ session.getId());
             }else{
+                System.out.println("-------------------------------------Message to host from: "+session.getId());
                 sessionHandler.sendControllerCommand(message);
             }
 //            session.getBasicRemote().sendText(message);
