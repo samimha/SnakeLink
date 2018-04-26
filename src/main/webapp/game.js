@@ -2,7 +2,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const socket = new WebSocket("ws://localhost:8080/SnakeLink/actions");
     const canvas = document.querySelector('#game');
     var context = canvas.getContext('2d');
-    socket.send("host");
+    socket.addEventListener("open", function (e) {
+        socket.send("host");
+    });
     var grid = canvas.width / 25;
     var snake = {
         x: grid * 10,
@@ -83,6 +85,40 @@ document.addEventListener("DOMContentLoaded", function (event) {
         apple.x = getRandomInt(0, 25) * grid;
         apple.y = getRandomInt(0, 25) * grid;
     }
+    socet.addEventListener("message",function(e){
+        if (event.defaultPrevented) {
+            return; // Do nothing if the event was already processed
+        }
+
+        switch (e.data) {
+            case "1-down":
+                if (snake.dy === 0) {
+                    snake.dy = grid;
+                    snake.dx = 0;
+                }
+                break;
+            case "1-up":
+                if (snake.dy === 0) {
+                    snake.dy = -grid;
+                    snake.dx = 0;
+                }
+                break;
+            case "1-left":
+                if (snake.dx === 0) {
+                    snake.dx = -grid;
+                    snake.dy = 0;
+                }
+                break;
+            case "1-right":
+                if (snake.dx === 0) {
+                    snake.dx = grid;
+                    snake.dy = 0;
+                }
+                break;
+            default:
+                return; // Quit when this doesn't handle the key event.
+        }
+    });
     window.addEventListener("keydown", function (event) {
         if (event.defaultPrevented) {
             return; // Do nothing if the event was already processed
