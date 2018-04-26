@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     //let wsUrl = url[2]+"/"+url[3]+"/"+url[4];
     let wsUrl = "snake-link.herokuapp.com/actions";
     console.log(wsUrl);
-    const socket = new WebSocket("ws:"+wsUrl);
+    const socket = new WebSocket("wss:"+wsUrl);
     const canvas = document.querySelector('#game');
     var context = canvas.getContext('2d');
     socket.addEventListener("open", function (e) {
