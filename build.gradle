@@ -22,21 +22,16 @@ plugins {
 
 dependencies {
     providedCompile 'com.bmuschko:gradle-tomcat-plugin:2.5'
-    compile 'com.github.jsimone:webapp-runner:8.5.11.3'
+    compile 'com.github.jsimone:webapp-runner:8.5.30.0'
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
     providedCompile group: 'javax.enterprise', name: 'cdi-api', version: '1.1.EDR1'
     providedCompile group: 'javax.websocket', name: 'javax.websocket-api', version: '1.1'
     providedCompile group: 'com.bmuschko', name: 'gradle-tomcat-plugin', version: '2.5'
 }
 
- gretty {
+gretty {
     servletContainer = 'tomcat8'
 }
-
-task stage {
-    dependsOn clean, war
-}
-war.mustRunAfter clean
 
 task copyToLib(type: Copy) {
     into "$buildDir/libs"
@@ -45,7 +40,10 @@ task copyToLib(type: Copy) {
     }
 }
 
-stage.dependsOn(copyToLib)
+task stage {
+    dependsOn clean, war, copyToLib
+}
+war.mustRunAfter clean
 
 repositories {
     jcenter()
