@@ -5,7 +5,7 @@
  * Learn how to create Gradle builds at https://guides.gradle.org/creating-new-gradle-builds/
  */
  
- buildscript {
+buildscript {
     repositories {
         jcenter()
     }
@@ -14,12 +14,21 @@
     }
 }
 
- plugins {
+plugins {
     id 'war'
     id 'java'
     id 'org.akhikhl.gretty' version '1.4.2'
- }
-	
+}
+
+dependencies {
+    providedCompile 'com.bmuschko:gradle-tomcat-plugin:2.5'
+    compile 'com.github.jsimone:webapp-runner:8.5.11.3'
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+    providedCompile group: 'javax.enterprise', name: 'cdi-api', version: '1.1.EDR1'
+    providedCompile group: 'javax.websocket', name: 'javax.websocket-api', version: '1.1'
+    providedCompile group: 'com.bmuschko', name: 'gradle-tomcat-plugin', version: '2.5'
+}
+
  gretty {
     servletContainer = 'tomcat8'
 }
@@ -30,22 +39,13 @@ task stage {
 war.mustRunAfter clean
 
 task copyToLib(type: Copy) {
-    into "$buildDir/webapps"
+    into "$buildDir/libs"
     from(configurations.compile) {
         include "webapp-runner*"
     }
 }
 
 stage.dependsOn(copyToLib)
-
-dependencies {
-    providedCompile 'com.bmuschko:gradle-tomcat-plugin:2.5'
-    compile 'com.github.jsimone:webapp-runner:8.5.11.3'
-    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
-    providedCompile group: 'javax.enterprise', name: 'cdi-api', version: '1.1.EDR1'
-    providedCompile group: 'javax.websocket', name: 'javax.websocket-api', version: '1.1'
-    providedCompile group: 'com.bmuschko', name: 'gradle-tomcat-plugin', version: '2.5'
-}
 
 repositories {
     jcenter()

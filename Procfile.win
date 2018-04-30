@@ -1,1 +1,1 @@
-web: java -jar build/webapps/webapp-runner.jar build/*.war
+web: java -jar build/server/*.jar build/libs/*.war
