@@ -30,7 +30,7 @@ task stage {
 war.mustRunAfter clean
 
 task copyToLib(type: Copy) {
-    into "${tomcatHome}/webapps"
+    into "$buildDir/webapps"
     from(configurations.compile) {
         include "webapp-runner*"
     }
