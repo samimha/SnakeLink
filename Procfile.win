@@ -1,1 +1,1 @@
-web: java -jar build/server/jetty-runner.jar build/libs/SnakeLink.war
+web: java -jar build/server/gradle-tomcat-plugin-2.5.jars build/libs/SnakeLink.war
