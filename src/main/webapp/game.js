@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     //let wsUrl = url[2]+"/"+url[3]+"/"+url[4];
     //let wsUrl = 'ws://' + window.location.host + "/SnakeLink/actions";
     //let wsUrl = "snake-link.herokuapp.com/SnakeLink/actions";
+    //let wsUrl = document.location.host + "/SnakeLink/actions"; 
     let wsUrl = document.location.host + "/actions" 
     console.log(wsUrl);
     const socket = new WebSocket('ws://'+wsUrl);
