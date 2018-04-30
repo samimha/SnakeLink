@@ -37,7 +37,7 @@ task copyToLib(type: Copy) {
 }
 
 task stage {
-	dependsOn clean, war
+	dependsOn clean, war, copyToLib
 	}
 	war.mustRunAfter clean
 
