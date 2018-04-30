@@ -1,1 +1,1 @@
-web: java -jar build/server/gradle-tomcat-plugin-2.5.jar --port $PORT build/libs/SnakeLink.war
+web: java -jar build/server/webapp-runner.jar --port $PORT build/libs/SnakeLink.war
