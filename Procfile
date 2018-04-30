@@ -1,1 +1,1 @@
-web: java -jar build/server/webapp-runner.jar --port $PORT build/*.war
+web: java -jar build/serverBaseDir_tomcat8/webapps/webapp-runner.jar --port $PORT build/*.war
