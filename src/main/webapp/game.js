@@ -3,9 +3,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
     url[4] = "actions";
     //let wsUrl = url[2]+"/"+url[3]+"/"+url[4];
     //let wsUrl = 'ws://' + window.location.host + "/SnakeLink/actions";
-    let wsUrl = "snake-link.herokuapp.com/SnakeLink/actions"; 
+    //let wsUrl = "snake-link.herokuapp.com/SnakeLink/actions";
+    let wsUrl = document.location.host + "/actions" 
     console.log(wsUrl);
-    const socket = new WebSocket('ws:'+wsUrl);
+    const socket = new WebSocket('ws://'+wsUrl);
     const canvas = document.querySelector('#game');
     var context = canvas.getContext('2d');
     socket.addEventListener("open", function (e) {
