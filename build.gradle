@@ -4,37 +4,39 @@
  * This is a general purpose Gradle build.
  * Learn how to create Gradle builds at https://guides.gradle.org/creating-new-gradle-builds/
  */
+ 
+ buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.bmuschko:gradle-tomcat-plugin:2.5"
+    }
+}
 
  plugins {
     id 'war'
     id 'java'	
-    id 'org.akhikhl.gretty' version '1.4.2'
+	id 'org.akhikhl.gretty' version '1.4.2'
  }
-
-//Include the jetty runner into the build/server folder
-task copyToLib(type: Copy) {
-    into "$buildDir/server"				//Default $buildDir is build/
-    from(configurations.compileOnly) {	//Note the use of the name of dependency 
-        include "jetty-runner*"			// configuration "compileOnly"
-        rename { String fileName -> 		//Forget the version # from filename
-"jetty-runner.jar"   
-        }
+ dependencies {
+        providedCompile 'com.bmuschko:gradle-tomcat-plugin:2.5'
     }
+	
+ gretty {
+ servletContainer = 'tomcat7'
 }
 
-//Add to task stage that Heroku to prepare deployment
-task stage {
-    dependsOn clean, war, copyToLib 
-}
-war.mustRunAfter clean	
 
 
 dependencies {
-    compileOnly 'org.eclipse.jetty:jetty-runner:9.4.9.v20180320'
 	providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
 	providedCompile group: 'javax.enterprise', name: 'cdi-api', version: '1.1.EDR1'
 	providedCompile group: 'javax.websocket', name: 'javax.websocket-api', version: '1.1'
-	providedCompile group: 'javax.inject', name: 'javax.inject', version: '1'
+	providedCompile group: 'com.bmuschko', name: 'gradle-tomcat-plugin', version: '2.5'
+	
+
+	
 }
 
 
