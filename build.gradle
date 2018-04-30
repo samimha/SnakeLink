@@ -27,6 +27,10 @@
  servletContainer = 'tomcat7'
 }
 
+task stage {
+	dependsOn clean, war
+	}
+	war.mustRunAfter clean
 
 
 dependencies {
