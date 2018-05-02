@@ -5,14 +5,6 @@
  * Learn how to create Gradle builds at https://guides.gradle.org/creating-new-gradle-builds/
  */
  
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath "com.bmuschko:gradle-tomcat-plugin:2.5"
-    }
-}
 
 plugins {
     id 'war'
@@ -20,8 +12,21 @@ plugins {
     id 'org.akhikhl.gretty' version '1.4.2'
 }
 
+task copyToLib(type: Copy) {
+    into "$buildDir/server"
+    from(configurations.compile) {
+        include "webapp-runner*"
+    }
+}
+task stage() {
+    dependsOn clean, war
+}
+war.mustRunAfter clean
+
+stage.dependsOn(copyToLib)
+
 dependencies {
-    compile 'com.github.jsimone:webapp-runner:8.5.30.0'
+    compileOnly 'com.github.jsimone:webapp-runner:8.5.30.0'
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
     providedCompile group: 'javax.enterprise', name: 'cdi-api', version: '1.1.EDR1'
     providedCompile group: 'javax.websocket', name: 'javax.websocket-api', version: '1.1'
@@ -32,22 +37,6 @@ dependencies {
 gretty {
     servletContainer = 'tomcat8'
 }
-
-task stage() {
-    dependsOn clean, war
-}
-war.mustRunAfter clean
-
-task copyToLib(type: Copy) {
-    into "$buildDir/server"
-    from(configurations.compile) {
-        include "webapp-runner*"
-    }
-}
-
-stage.dependsOn(copyToLib)
-
-
 
 repositories {
     jcenter()

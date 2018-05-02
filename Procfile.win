@@ -1,1 +1,1 @@
-web: java -jar build/server/*.jar build/libs/*.war
+web: java -jar build/libs/SnakeLink.war
