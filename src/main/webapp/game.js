@@ -1,31 +1,28 @@
 document.addEventListener("DOMContentLoaded", function (event) {
-    
-    //let wsUrl = document.location.host + "/SnakeLink/actions"; 
-    let wsUrl = document.location.host + "/actions" 
+
+    let wsUrl = document.location.host + "/SnakeLink/actions";
+    //let wsUrl = document.location.host + "/actions" 
     console.log(wsUrl);
-    const socket = new WebSocket('ws://'+wsUrl);
+    const socket = new WebSocket('ws://' + wsUrl);
     const canvas = document.querySelector('#game');
     var context = canvas.getContext('2d');
     socket.addEventListener("open", function (e) {
         socket.send("host");
     });
     var grid = canvas.width / 25;
-    var snake = {
-        x: grid * 10,
-        y: grid * 10,
-        dx: grid,
-        dy: 0,
-        cells: [],
-        maxCells: 4
+    class Snake {
+        constructor() {
+            this.x = grid * 10;
+            this.y = grid * 10;
+            this.dx = grid;
+            this.dy = 0;
+            this.cells = [];
+            this.maxCells = 4
+        }
     };
-    var snakeTwo = {
-        x: grid * 10,
-        y: grid * 10,
-        dx: grid,
-        dy: 0,
-        cells: [],
-        maxCells: 4
-    };
+    let snakes = [];
+    snakes.push(new Snake());
+    snakes.push(new Snake());
     var count = 0;
     var apple = {
         x: grid * 10 * 2,
@@ -38,93 +35,63 @@ document.addEventListener("DOMContentLoaded", function (event) {
     function loop() {
         requestAnimationFrame(loop);
         // slow game loop to 15 fps instead of 60 - 60/15 = 4
-        if (++count < 4) {
+        if (++count < 3) {
             return;
         }
         count = 0;
         context.clearRect(0, 0, canvas.width, canvas.height);
-        snake.x += snake.dx;
-        snake.y += snake.dy;
-        snakeTwo.x += snakeTwo.dx;
-        snakeTwo.y += snakeTwo.dy;
         // wrap snake position on edge of screen
-        if (snake.x < 0) {
-            snake.x = canvas.width - grid;
-        }
-        else if (snake.x >= canvas.width) {
-            snake.x = 0;
-        }
-        if (snake.y < 0) {
-            snake.y = canvas.height - grid;
-        }
-        else if (snake.y >= canvas.height) {
-            snake.y = 0;
-        }
-        if (snakeTwo.x < 0) {
-            snakeTwo.x = canvas.width - grid;
-        }
-        else if (snakeTwo.x >= canvas.width) {
-            snakeTwo.x = 0;
-        }
-        if (snakeTwo.y < 0) {
-            snakeTwo.y = canvas.height - grid;
-        }
-        else if (snakeTwo.y >= canvas.height) {
-            snakeTwo.y = 0;
-        }
-        // keep track of where snake has been. front of the array is always the head
-        snake.cells.unshift({ x: snake.x, y: snake.y });
-        snakeTwo.cells.unshift({ x: snakeTwo.x, y: snakeTwo.y });
-        // remove cells as we move away from them
-        if (snake.cells.length > snake.maxCells) {
-            snake.cells.pop();
-        }
-        if (snakeTwo.cells.length > snakeTwo.maxCells) {
-            snakeTwo.cells.pop();
-        }
-        // draw apple
-        context.fillStyle = 'red';
-        context.fillRect(apple.x, apple.y, grid - 1, grid - 1);
-        // draw snake
-        context.fillStyle = 'blue';
+        for (let i = 0; i < snakes.length; i++) {
 
-        snake.cells.forEach(function (cell, index) {
-            context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
-            // snake ate apple
-            if (cell.x === apple.x && cell.y === apple.y) {
-                snake.maxCells++;
-                apple.x = getRandomInt(0, 25) * grid;
-                apple.y = getRandomInt(0, 25) * grid;
+            snakes[i].x += snakes[i].dx;
+            snakes[i].y += snakes[i].dy;
+            if (snakes[i].x < 0) {
+                snakes[i].x = canvas.width - grid;
             }
-            // check collision with all cells after this one (modified bubble sort)
-            for (var i = index + 1; i < snake.cells.length; i++) {
+            else if (snakes[i].x >= canvas.width) {
+                snakes[i].x = 0;
+            }
+            if (snakes[i].y < 0) {
+                snakes[i].y = canvas.height - grid;
+            }
+            else if (snakes[i].y >= canvas.height) {
+                snakes[i].y = 0;
+            }
+            snakes[i].cells.unshift({ x: snakes[i].x, y: snakes[i].y });
+            if (snakes[i].cells.length > snakes[i].maxCells) {
+                snakes[i].cells.pop();
+            }
+            // draw apple
+            context.fillStyle = 'red';
+            context.fillRect(apple.x, apple.y, grid - 1, grid - 1);
+            // draw snake
+            if (i === 0) {
+                context.fillStyle = 'blue';
+            } else {
+                context.fillStyle = 'yellow';
+            }
 
-                // collision. reset game
-                if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
-                    resetGame();
+
+            snakes[i].cells.forEach(function (cell, index) {
+                context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
+                // snake ate apple
+                if (cell.x === apple.x && cell.y === apple.y) {
+                    snakes[i].maxCells++;
+                    apple.x = getRandomInt(0, 25) * grid;
+                    apple.y = getRandomInt(0, 25) * grid;
                 }
-            }
-        });
-        context.fillStyle = 'green';
-        snakeTwo.cells.forEach(function (cell, index) {
-            context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
-            // snake ate apple
-            if (cell.x === apple.x && cell.y === apple.y) {
-                snakeTwo.maxCells++;
-                apple.x = getRandomInt(0, 25) * grid;
-                apple.y = getRandomInt(0, 25) * grid;
-            }
-            // check collision with all cells after this one (modified bubble sort)
-            for (var i = index + 1; i < snakeTwo.cells.length; i++) {
+                // check collision with all cells after this one (modified bubble sort)
+                for (var x = index + 1; x < snakes[i].cells.length; x++) {
 
-                // collision. reset game
-                if (cell.x === snakeTwo.cells[i].x && cell.y === snakeTwo.cells[i].y) {
-                    resetGame();
+                    // collision. reset game
+                    if (cell.x === snakes[i].cells[x].x && cell.y === snakes[i].cells[x].y) {
+                        resetGame(snakes[i]);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
-    function resetGame() {
+    function resetGame(snake) {
         snake.x = grid * 10;
         snake.y = grid * 10;
         snake.cells = [];
@@ -134,59 +101,38 @@ document.addEventListener("DOMContentLoaded", function (event) {
         apple.x = getRandomInt(0, 25) * grid;
         apple.y = getRandomInt(0, 25) * grid;
     }
+
     socket.addEventListener("message", function (e) {
         if (e.defaultPrevented) {
             return; // Do nothing if the event was already processed
         }
-
-        switch (e.data) {
-            case "1-down":
-                if (snake.dy === 0) {
-                    snake.dy = grid;
-                    snake.dx = 0;
+        console.log(e.data);
+        let data = e.data.split("-");
+        let id = data[0]-1;
+        switch (data[1]) {
+            case "down":
+                if (snakes[id].dy === 0) {
+                    snakes[id].dy = grid;
+                    snakes[id].dx = 0;
                 }
                 break;
-            case "1-up":
-                if (snake.dy === 0) {
-                    snake.dy = -grid;
-                    snake.dx = 0;
+            case "up":
+                if (snakes[id].dy === 0) {
+                    snakes[id].dy = -grid;
+                    snakes[id].dx = 0;
                 }
                 break;
-            case "1-left":
-                if (snake.dx === 0) {
-                    snake.dx = -grid;
-                    snake.dy = 0;
+            case "left":
+                if (snakes[id].dx === 0) {
+                    snakes[id].dx = -grid;
+                    snakes[id].dy = 0;
                 }
                 break;
-            case "1-right":
-                if (snake.dx === 0) {
-                    snake.dx = grid;
-                    snake.dy = 0;
+            case "right":
+                if (snakes[id].dx === 0) {
+                    snakes[id].dx = grid;
+                    snakes[id].dy = 0;
                 }
-            case "2-down":
-                if (snakeTwo.dy === 0) {
-                    snakeTwo.dy = grid;
-                    snakeTwo.dx = 0;
-                }
-                break;
-            case "2-up":
-                if (snakeTwo.dy === 0) {
-                    snakeTwo.dy = -grid;
-                    snakeTwo.dx = 0;
-                }
-                break;
-            case "2-left":
-                if (snakeTwo.dx === 0) {
-                    snakeTwo.dx = -grid;
-                    snakeTwo.dy = 0;
-                }
-                break;
-            case "2-right":
-                if (snakeTwo.dx === 0) {
-                    snakeTwo.dx = grid;
-                    snakeTwo.dy = 0;
-                }
-                break;
                 break;
             default:
                 return; // Quit when this doesn't handle the key event.
