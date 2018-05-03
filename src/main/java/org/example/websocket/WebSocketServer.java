@@ -25,7 +25,6 @@ public class WebSocketServer {
         public void open(Session session) {
             System.out.println("---------------------------------------Opening Session: " + session.getId());
             
-            sessionHandler.addSession(session);
             try{
             session.getBasicRemote().sendText(""+pelaaja);
                 System.out.println("---------------------------------Connected as player "+pelaaja);
@@ -49,13 +48,14 @@ public class WebSocketServer {
 
     @OnMessage
         public void handleMessage(String message, Session session) {
+            String[] parsed = message.split(" ");
             System.out.println("--------------------------------------Message from: "+session.getId());
-            if(message.equals("host")){
-                sessionHandler.connectHost(session);
+            if(parsed[0].equals("host")){
+                sessionHandler.connectHost(parsed[1],session);
                 System.out.println("--------------------------------Host request send from "+ session.getId());
             }else{
                 System.out.println("-------------------------------------Message to host from: "+session.getId());
-                sessionHandler.sendControllerCommand(message);
+                sessionHandler.sendControllerCommand(parsed[0],parsed[1]);
             }
 //            session.getBasicRemote().sendText(message);
             System.out.println("moro");
