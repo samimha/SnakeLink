@@ -36,8 +36,8 @@
             const right = document.querySelector("#right");
             const hit = document.querySelector("#hit");
             let id;
-            //let wsUrl = document.location.host + "/SnakeLink/actions"; 
-            let wsUrl = document.location.host + "/actions"
+            let wsUrl = document.location.host + "/SnakeLink/actions"; 
+            //let wsUrl = document.location.host + "/actions"
             console.log(wsUrl);
             const socket = new WebSocket("ws://" + wsUrl);
             socket.addEventListener("message", function (e) {
