@@ -23,7 +23,9 @@ public class SessionHandler {
     public SessionHandler(){
         
     }
-    
+    public Session getHost(String id){
+        return hosts.get(id);
+    }
 
     public void removeSession(Session session) {
         System.out.println("----------------------Session removed: "+ session.getId());

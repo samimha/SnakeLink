@@ -20,6 +20,7 @@ import javax.websocket.Session;
 public class WebSocketServer {
     static int pelaaja=0;
     private SessionHandler sessionHandler = new SessionHandler();
+    private Session myhost;
     
      @OnOpen
         public void open(Session session) {
@@ -53,6 +54,8 @@ public class WebSocketServer {
             if(parsed[0].equals("host")){
                 sessionHandler.connectHost(parsed[1],session);
                 System.out.println("--------------------------------Host request send from "+ session.getId());
+            }else if(parsed[0].equals("connect")){
+                myhost=sessionHandler.getHost(parsed[1]);
             }else{
                 System.out.println("-------------------------------------Message to host from: "+session.getId());
                 sessionHandler.sendControllerCommand(parsed[0],parsed[1]);
