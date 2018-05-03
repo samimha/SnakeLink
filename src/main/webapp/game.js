@@ -7,6 +7,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const canvas = document.querySelector('#game');
     const showKey = document.querySelector('#show-key');
     const playersList = document.querySelector("#players-list");
+    let select = document.querySelector("#size");
+    const settingsDiv = document.querySelector("#settings-div");
+    const arena = document.querySelector("#arena");
     let players = [];
     let player;
     const colors = ["YELLOW","LIME","ORANGERED","AQUA","BLUE","FUCHSIA","DEEPPINK"];
@@ -17,7 +20,19 @@ document.addEventListener("DOMContentLoaded", function (event) {
         socket.send("host "+hostKey);
         showKey.textContent = "Game "+hostKey;
     });
-    var grid = canvas.width / 25;
+    let size = select.value;
+    select.addEventListener('change', function(e){
+        size = select.value;
+        console.log(size);
+        canvas.width = 16 * size;
+        canvas.height = 16 * size;
+        grid = canvas.width / size;
+        arena.classList.remove("hidden");
+        //resetGame();
+    });
+    
+    let grid = canvas.width / size;
+    
     class Snake {
         constructor() {
             this.x = grid * 10;
@@ -81,8 +96,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 // snake ate apple
                 if (cell.x === apple.x && cell.y === apple.y) {
                     snakes[i].maxCells++;
-                    apple.x = getRandomInt(0, 25) * grid;
-                    apple.y = getRandomInt(0, 25) * grid;
+                    apple.x = getRandomInt(0, size) * grid;
+                    apple.y = getRandomInt(0, size) * grid;
                 }
                 // check collision with all cells after this one (modified bubble sort)
                 for (var x = index + 1; x < snakes[i].cells.length; x++) {
@@ -102,8 +117,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
         snake.maxCells = 4;
         snake.dx = grid;
         snake.dy = 0;
-        apple.x = getRandomInt(0, 25) * grid;
-        apple.y = getRandomInt(0, 25) * grid;
+        apple.x = getRandomInt(0, size) * grid;
+        apple.y = getRandomInt(0, size) * grid;
     }
     function newPlayer(info){
         if(!players.includes(info.name)&&info.name!=0){
@@ -124,7 +139,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         if (e.defaultPrevented) {
             return; // Do nothing if the event was already processed
         }
-        console.log(e.data);
+        //console.log(e.data);
         
         let data = e.data.split("-");
         let id = data[0]-1;
