@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const canvas = document.querySelector('#game');
     var context = canvas.getContext('2d');
     socket.addEventListener("open", function (e) {
-        socket.send("host");
+        socket.send("host 1234");
     });
     var grid = canvas.width / 25;
     class Snake {

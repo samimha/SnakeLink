@@ -41,7 +41,7 @@
             console.log(wsUrl);
             const socket = new WebSocket("ws://" + wsUrl);
             socket.addEventListener("message", function (e) {
-                id = e.data;
+                id = "1234 "+e.data;
             })
 
 
