@@ -7,6 +7,13 @@
 </head>
 
 <body>
+    <div id="connect">
+        <input type="text" id="host-key">
+        <button id="connect-btn">Connect</button>
+    </div>
+    <div id="connected" class="hidden">
+        <h3 id="show-key"></h3>
+    </div>
     <div class="grid-container">
         <div class="grid-item up">
             <button id="up">^</button>
@@ -23,52 +30,85 @@
             <button id="down">v</button>
         </div>
         <div class="grid-item item">
-            <h3>Hit</h3>
-            <p id="hit"></p>
-
+            <h3 id="player"></h3>
         </div>
     </div>
+    <h3 id="press-any" class="hidden">Press any arrow to spawn snake</h3>
     <script>
         document.addEventListener("DOMContentLoaded", function (event) {
             const up = document.querySelector("#up");
             const down = document.querySelector("#down");
             const left = document.querySelector("#left");
             const right = document.querySelector("#right");
-            const hit = document.querySelector("#hit");
+            const player = document.querySelector("#player");
+            const connectDiv = document.querySelector("#connect");
+            const connectedDiv = document.querySelector("#connected");
+            const showKey = document.querySelector("#show-key");
+            const connectBtn = document.querySelector("#connect-btn");
+            let hostKey = document.querySelector("#host-key");
             let id;
-            let wsUrl = document.location.host + "/SnakeLink/actions"; 
+            let host;
+            let wsUrl = document.location.host + "/SnakeLink/actions";
             //let wsUrl = document.location.host + "/actions"
             console.log(wsUrl);
-            const socket = new WebSocket("ws://" + wsUrl);
-            socket.addEventListener("message", function (e) {
-                id = e.data;
-            })
+            connectBtn.addEventListener('click', function (e) {
+                console.log(hostKey.value);
+                if (hostKey.value != null) {
+                    host = hostKey.value;
+                    openSocket();
+                }
+            });
+            let socket;
+            function openSocket() {
+                socket = new WebSocket("ws://" + wsUrl);
+                socket.addEventListener("message", function (e) {
+                    id = host + " " + e.data;
+                    connectDiv.classList.add("hidden");
+                    showKey.textContent = "Game: " + host;
+                    connectedDiv.classList.remove("hidden");
+                    pressAny.classList.remove("hidden");
+                    player.textContent = "Player "+e.data;
+                })
+            }
+            const pressAny = document.querySelector("#press-any");
+            function hide (){
+                if(pressAny.classList.contains("hidden")|| connectedDiv.classList.contains("hidden")){
+                    return;
+                }else{
+                    pressAny.classList.add("hidden")
+                }
+            }
+
 
 
             down.addEventListener('click', function (e) {
                 //hit.textContent = "down";
                 socket.send(id + "-down");
+                hide();
             });
             //ylös
             up.addEventListener('click', function (e) {
                 //hit.textContent = "up";
                 socket.send(id + "-up");
+                hide();
             });
             //oikea
             right.addEventListener('click', function (e) {
                 //hit.textContent = "right";
                 socket.send(id + "-right");
+                hide();
             });
             //vasen
             left.addEventListener('click', function (e) {
                 //hit.textContent = "left";
                 socket.send(id + "-left");
+                hide();
             });
             window.addEventListener("keydown", function (event) {
                 if (event.defaultPrevented) {
                     return; // Do nothing if the event was already processed
                 }
-
+                hide();
                 switch (event.key) {
                     case "ArrowDown":
                         socket.send(id + "-down");
@@ -85,7 +125,6 @@
                     default:
                         return; // Quit when this doesn't handle the key event.
                 }
-
                 // Cancel the default action to avoid it being handled twice
                 event.preventDefault();
             }, true);

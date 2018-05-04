@@ -5,9 +5,17 @@ document.addEventListener("DOMContentLoaded", function (event) {
     console.log(wsUrl);
     const socket = new WebSocket('ws://' + wsUrl);
     const canvas = document.querySelector('#game');
+    const showKey = document.querySelector('#show-key');
+    const playersList = document.querySelector("#players-list");
+    let players = [];
+    let player;
+    const colors = ["YELLOW","LIME","ORANGERED","AQUA","BLUE","FUCHSIA","DEEPPINK"];
+    
     var context = canvas.getContext('2d');
+    let hostKey = getRandomInt(1000,9999);
     socket.addEventListener("open", function (e) {
-        socket.send("host");
+        socket.send("host "+hostKey);
+        showKey.textContent = "Game "+hostKey;
     });
     var grid = canvas.width / 25;
     class Snake {
@@ -21,8 +29,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     };
     let snakes = [];
-    snakes.push(new Snake());
-    snakes.push(new Snake());
+    //snakes.push(new Snake());
+    //snakes.push(new Snake());
     var count = 0;
     var apple = {
         x: grid * 10 * 2,
@@ -35,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     function loop() {
         requestAnimationFrame(loop);
         // slow game loop to 15 fps instead of 60 - 60/15 = 4
-        if (++count < 4) {
+        if (++count < 3) {
             return;
         }
         count = 0;
@@ -65,11 +73,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             context.fillStyle = 'red';
             context.fillRect(apple.x, apple.y, grid - 1, grid - 1);
             // draw snake
-            if (i === 0) {
-                context.fillStyle = 'blue';
-            } else {
-                context.fillStyle = 'yellow';
-            }
+            context.fillStyle = colors[i];
 
 
             snakes[i].cells.forEach(function (cell, index) {
@@ -101,14 +105,34 @@ document.addEventListener("DOMContentLoaded", function (event) {
         apple.x = getRandomInt(0, 25) * grid;
         apple.y = getRandomInt(0, 25) * grid;
     }
-
+    function newPlayer(info){
+        if(!players.includes(info.name)&&info.name!=0){
+            players.push(info.name);
+            let li = document.createElement("li");
+            let p = document.createElement("p");
+            let colBox = document.createElement("div");
+            colBox.classList.add("color-box");
+            colBox.style.backgroundColor = info.color;
+            p.textContent = info.name;
+            li.appendChild(p);
+            li.appendChild(colBox);
+            playersList.appendChild(li);
+            snakes.push(new Snake());
+        }
+    }
     socket.addEventListener("message", function (e) {
         if (e.defaultPrevented) {
             return; // Do nothing if the event was already processed
         }
         console.log(e.data);
+        
         let data = e.data.split("-");
         let id = data[0]-1;
+        let info = {
+            name : data[0],
+            color : colors[id]
+        }
+        newPlayer(info);
         switch (data[1]) {
             case "down":
                 if (snakes[id].dy === 0) {

@@ -22,7 +22,7 @@ task copyToLib(type: Copy) {
     }
 }
 task stage() {
-    dependsOn clean, war, copyToLib
+    dependsOn clean, war
 }
 war.mustRunAfter clean
 
