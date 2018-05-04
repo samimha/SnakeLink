@@ -54,6 +54,7 @@ public class WebSocketServer {
             if(parsed[0].equals("host")){
                 sessionHandler.connectHost(parsed[1],session);
                 System.out.println("--------------------------------Host request send from "+ session.getId());
+                pelaaja=1;
             }else if(parsed[0].equals("connect")){
                 myhost=sessionHandler.getHost(parsed[1]);
             }else{
