@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let expiry = new Date(Date.now() + 60 * 1000).toString(); //60 sec from now on
         let cookieString = '';
         for(let key in myCookies){
-            cookieString = key + '=' + myCookies[key] + ';' + expiry + ';';
+            cookieString = key + '=' + myCookies[key] + ';' + expiry + ";path=/";
             document.cookie = cookieString;
         }
         document.querySelector('#out').textContent += document.cookie;
@@ -22,9 +22,11 @@ document.addEventListener('DOMContentLoaded', function () {
     //load function
     document.querySelector('#load').addEventListener('click', function (){
         myCookies = {};
+
         //key-value-pairs
         let kvp = document.cookie.split(';');
-        //rebuilding the cookie list
+
+        //rebuildimg the cookie list
         for (let key in kvp){
             let cookie = kvp[key].split('=');
             myCookies[cookie[0].trim()] = cookie [1];
