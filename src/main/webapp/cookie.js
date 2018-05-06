@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
     //save function
     document.querySelector('#save').addEventListener('click', function (){
         myCookies['user'] = document.querySelector('#user').value;
-        myCookies['age'] = document.querySelector('#age').value;
         myCookies['color'] = document.querySelector('#color').value;
         
         document.cookie = '';
@@ -15,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function () {
             cookieString = key + '=' + myCookies[key] + ';' + expiry + ";path=/";
             document.cookie = cookieString;
         }
-        document.querySelector('#out').textContent += document.cookie;
         alert(document.cookie);
     });
 
@@ -26,13 +24,12 @@ document.addEventListener('DOMContentLoaded', function () {
         //key-value-pairs
         let kvp = document.cookie.split(';');
 
-        //rebuildimg the cookie list
+        //rebuilding the cookie list
         for (let key in kvp){
             let cookie = kvp[key].split('=');
             myCookies[cookie[0].trim()] = cookie [1];
         }
         document.querySelector('#user').value = myCookies['user'];
-        document.querySelector('#age').value = myCookies['age'];
         document.querySelector('#color').value = myCookies['color'];
     });
 });
