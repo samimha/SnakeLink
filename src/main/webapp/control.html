@@ -9,8 +9,10 @@
 <body>
     <div class="container">
         <div id="connect">
-            <input type="text" id="host-key">
-            <button id="connect-btn">Connect</button>
+            <form id="connect-form">
+                <input type="text" id="host-key" autofocus required>
+                <input type="submit" id="connect-btn" value="Connect">
+            </form>
         </div>
         
         <div id="connected" class="hidden">
@@ -55,19 +57,21 @@
             const connectDiv = document.querySelector("#connect");
             const connectedDiv = document.querySelector("#connected");
             const showKey = document.querySelector("#show-key");
-            const connectBtn = document.querySelector("#connect-btn");
+            const connectForm = document.querySelector("#connect-form");
             let hostKey = document.querySelector("#host-key");
             let id;
             let host;
             let wsUrl = document.location.host + "/SnakeLink/actions";
             //let wsUrl = document.location.host + "/actions"
             console.log(wsUrl);
-            connectBtn.addEventListener('click', function (e) {
+            connectForm.addEventListener('submit', function (e) {
                 console.log(hostKey.value);
-                if (hostKey.value != null) {
-                    host = hostKey.value;
-                    openSocket();
+                if (!hostKey.value) {
+                    return false;
                 }
+                e.preventDefault();
+                host = hostKey.value;
+                openSocket();
             });
             let socket;
             function openSocket() {
