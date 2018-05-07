@@ -21,19 +21,26 @@ document.addEventListener("DOMContentLoaded", function (event) {
         showKey.textContent = "Game " + hostKey;
     });
     let size = select.value;
-    select.addEventListener('change', function(e){
-        size = select.value;
-        canvas.width = 16 * size;
-        canvas.height = 16 * size;
-        grid = canvas.width / size;
-        //arena.classList.remove("hidden");
-        for(let i=0;i<snakes.length;i++){
-            resetGame(snakes[i]);
+    select.addEventListener('change', function (e) {
+        if (snakes.length == 0) {
+            size = select.value;
+            canvas.width = 16 * size;
+            canvas.height = 16 * size;
+            grid = canvas.width / size;
+            //arena.classList.remove("hidden");
+            for (let i = 0; i < snakes.length; i++) {
+                resetGame(snakes[i]);
+            }
+        }else{
+            if(!settingsDiv.classList.contains("hidden")){
+                settingsDiv.classList.add("hidden");
+            }
         }
+
     });
-    
+
     let grid = canvas.width / size;
-    
+
     class Snake {
         constructor(color) {
             this.x = grid * 10;
@@ -87,11 +94,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
             // draw apple
             context.fillStyle = 'red';
             context.fillRect(apple.x, apple.y, grid - 1, grid - 1);
-            
-            
+
+
             // draw snake
             context.fillStyle = snakes[i].color;
-            
+
 
             snakes[i].cells.forEach(function (cell, index) {
                 context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
@@ -152,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         } else {
             let data = e.data.split("-");
             let id = data[0] - 1;
-            
+
             switch (data[1]) {
                 case "down":
                     if (snakes[id].dy === 0) {
