@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const playersList = document.querySelector("#players-list");
     let select = document.querySelector("#size");
     const settingsDiv = document.querySelector("#settings-div");
-    const arena = document.querySelector("#arena");
+    //const arena = document.querySelector("#arena");
     let players = [];
     let player;
     const colors = ["YELLOW", "LIME", "ORANGERED", "AQUA", "BLUE", "FUCHSIA", "DEEPPINK"];
@@ -23,12 +23,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
     let size = select.value;
     select.addEventListener('change', function(e){
         size = select.value;
-        console.log(size);
         canvas.width = 16 * size;
         canvas.height = 16 * size;
         grid = canvas.width / size;
-        arena.classList.remove("hidden");
-        //resetGame();
+        //arena.classList.remove("hidden");
         for(let i=0;i<snakes.length;i++){
             resetGame(snakes[i]);
         }
@@ -48,8 +46,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     };
     let snakes = [];
-    //snakes.push(new Snake());
-    //snakes.push(new Snake());
     var count = 0;
     var apple = {
         x: grid * 10 * 2,
