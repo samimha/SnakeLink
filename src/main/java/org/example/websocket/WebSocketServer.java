@@ -39,9 +39,10 @@ public class WebSocketServer {
     }
 
     @OnClose
-        public void close(Session session) {
+        public void close(Session session) throws IOException {
             sessionHandler.removeSession(session);
             System.out.println("---------------------------------------Closing Session: "+ session.getId());
+            myhost.getBasicRemote().sendText("delete "+myController);
     }
 
     @OnError
