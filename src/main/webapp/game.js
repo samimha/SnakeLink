@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     let wsUrl = document.location.host + "/SnakeLink/actions";
     //let wsUrl = document.location.host + "/actions" 
-    console.log(wsUrl);
+    //console.log(wsUrl);
     const socket = new WebSocket('ws://' + wsUrl);
     const canvas = document.querySelector('#game');
     const showKey = document.querySelector('#show-key');
@@ -76,23 +76,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
             
             
             // draw snake
-
-            //dig cookies
-           /*  myCookies = {};
-
-            //key-value-pairs
-            let kvp = document.cookie.split(';');
-
-            //rebuildimg the cookie list
-            for (let key in kvp) {
-                let cookie = kvp[key].split('=');
-                myCookies[cookie[0].trim()] = cookie[1];
-            }
-            
-            //set snake color
-            if(!(colors.indexOf(myCookies['color']) > -1)){
-                colors[i] = myCookies['color'];
-            } */
             context.fillStyle = snakes[i].color;
             
 
@@ -144,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         if (e.defaultPrevented) {
             return; // Do nothing if the event was already processed
         }
-        console.log(e.data);
+        //console.log(e.data);
         if (e.data.startsWith("#")) {
             let split = e.data.split(" ");
             let info = {
