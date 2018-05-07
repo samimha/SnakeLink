@@ -56,6 +56,8 @@
             const showKey = document.querySelector("#show-key");
             const connectBtn = document.querySelector("#connect-btn");
             let hostKey = document.querySelector("#host-key");
+            let color = document.querySelector("#color");
+            let user = document.querySelector("#user");
             let id;
             let host;
             let wsUrl = document.location.host + "/SnakeLink/actions";
@@ -63,8 +65,8 @@
             //let wsUrl = document.location.host + "/actions"
             console.log(wsUrl);
             connectBtn.addEventListener('click', function (e) {
-                let color = document.querySelector('#color').value;
-                socket.send(id + "-" + color);
+                
+                //socket.send(id + "-" + color);
 
                 console.log(hostKey.value);
                 if (hostKey.value != null) {
@@ -75,16 +77,18 @@
             let socket;
             function openSocket() {
                 socket = new WebSocket("ws://" + wsUrl);
-                socket.addEventListener("message", function (e) {
-                    id = host + " " + e.data;
+                socket.addEventListener("open", function (e) {
+                    socket.send("connect " + host + " "+color.value+" "+user.value);
                     connectDiv.classList.add("hidden");
                     showKey.textContent = "Game: " + host;
                     connectedDiv.classList.remove("hidden");
                     pressAny.classList.remove("hidden");
                     player.textContent = "Player " + e.data;
-                    //send snake color info
-                    //let color = document.querySelector('#color').value;
-                    //socket.send(id + "-" + color);
+                });
+                
+                socket.addEventListener("message", function (e) {
+                    id = host + " " + e.data;
+                    
                 })
             }
             const pressAny = document.querySelector("#press-any");
@@ -100,25 +104,25 @@
 
             down.addEventListener('click', function (e) {
                 //hit.textContent = "down";
-                socket.send(id + "-down");
+                socket.send("-down");
                 hide();
             });
             //ylös
             up.addEventListener('click', function (e) {
                 //hit.textContent = "up";
-                socket.send(id + "-up");
+                socket.send("-up");
                 hide();
             });
             //oikea
             right.addEventListener('click', function (e) {
                 //hit.textContent = "right";
-                socket.send(id + "-right");
+                socket.send("-right");
                 hide();
             });
             //vasen
             left.addEventListener('click', function (e) {
                 //hit.textContent = "left";
-                socket.send(id + "-left");
+                socket.send("-left");
                 hide();
             });
             window.addEventListener("keydown", function (event) {
@@ -128,16 +132,16 @@
                 hide();
                 switch (event.key) {
                     case "ArrowDown":
-                        socket.send(id + "-down");
+                        socket.send("-down");
                         break;
                     case "ArrowUp":
-                        socket.send(id + "-up");
+                        socket.send("-up");
                         break;
                     case "ArrowLeft":
-                        socket.send(id + "-left");
+                        socket.send("-left");
                         break;
                     case "ArrowRight":
-                        socket.send(id + "-right");
+                        socket.send("-right");
                         break;
                     default:
                         return; // Quit when this doesn't handle the key event.

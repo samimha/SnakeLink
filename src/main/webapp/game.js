@@ -19,13 +19,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
     var grid = canvas.width / 25;
     class Snake {
-        constructor() {
+        constructor(color) {
             this.x = grid * 10;
             this.y = grid * 10;
             this.dx = grid;
             this.dy = 0;
             this.cells = [];
-            this.maxCells = 4
+            this.maxCells = 4;
+            this.color = color;
         }
     };
     let snakes = [];
@@ -77,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             // draw snake
 
             //dig cookies
-            myCookies = {};
+           /*  myCookies = {};
 
             //key-value-pairs
             let kvp = document.cookie.split(';');
@@ -91,8 +92,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
             //set snake color
             if(!(colors.indexOf(myCookies['color']) > -1)){
                 colors[i] = myCookies['color'];
-            }
-            context.fillStyle = colors[i];
+            } */
+            context.fillStyle = snakes[i].color;
             
 
             snakes[i].cells.forEach(function (cell, index) {
@@ -136,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             li.appendChild(p);
             li.appendChild(colBox);
             playersList.appendChild(li);
-            snakes.push(new Snake());
+            snakes.push(new Snake(info.color));
         }
     }
     socket.addEventListener("message", function (e) {
@@ -144,41 +145,45 @@ document.addEventListener("DOMContentLoaded", function (event) {
             return; // Do nothing if the event was already processed
         }
         console.log(e.data);
-
-        let data = e.data.split("-");
-        let id = data[0] - 1;
-        let info = {
-            name: data[0],
-            color: colors[id]
-        }
-        newPlayer(info);
-        switch (data[1]) {
-            case "down":
-                if (snakes[id].dy === 0) {
-                    snakes[id].dy = grid;
-                    snakes[id].dx = 0;
-                }
-                break;
-            case "up":
-                if (snakes[id].dy === 0) {
-                    snakes[id].dy = -grid;
-                    snakes[id].dx = 0;
-                }
-                break;
-            case "left":
-                if (snakes[id].dx === 0) {
-                    snakes[id].dx = -grid;
-                    snakes[id].dy = 0;
-                }
-                break;
-            case "right":
-                if (snakes[id].dx === 0) {
-                    snakes[id].dx = grid;
-                    snakes[id].dy = 0;
-                }
-                break;
-            default:
-                return; // Quit when this doesn't handle the key event.
+        if (e.data.startsWith("#")) {
+            let split = e.data.split(" ");
+            let info = {
+                name: split[1],
+                color: split[0]
+            }
+            newPlayer(info);
+        } else {
+            let data = e.data.split("-");
+            let id = data[0] - 1;
+            
+            switch (data[1]) {
+                case "down":
+                    if (snakes[id].dy === 0) {
+                        snakes[id].dy = grid;
+                        snakes[id].dx = 0;
+                    }
+                    break;
+                case "up":
+                    if (snakes[id].dy === 0) {
+                        snakes[id].dy = -grid;
+                        snakes[id].dx = 0;
+                    }
+                    break;
+                case "left":
+                    if (snakes[id].dx === 0) {
+                        snakes[id].dx = -grid;
+                        snakes[id].dy = 0;
+                    }
+                    break;
+                case "right":
+                    if (snakes[id].dx === 0) {
+                        snakes[id].dx = grid;
+                        snakes[id].dy = 0;
+                    }
+                    break;
+                default:
+                    return; // Quit when this doesn't handle the key event.
+            }
         }
     });
     requestAnimationFrame(loop);
