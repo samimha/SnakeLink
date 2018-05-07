@@ -60,7 +60,7 @@ public class WebSocketServer {
                 
             }else if(parsed[0].equals("connect")){
                 myhost=sessionHandler.getHost(parsed[1]);
-                myhost.getBasicRemote().sendText(parsed[2]);
+                myhost.getBasicRemote().sendText(parsed[2]+" "+parsed[3]);
                 myController=pelaaja;
                 pelaaja++;
             }else{
