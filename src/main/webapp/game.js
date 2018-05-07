@@ -29,6 +29,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
         grid = canvas.width / size;
         arena.classList.remove("hidden");
         //resetGame();
+        for(let i=0;i<snakes.length;i++){
+            resetGame(snakes[i]);
+        }
     });
     
     let grid = canvas.width / size;
