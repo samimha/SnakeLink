@@ -31,8 +31,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
             for (let i = 0; i < snakes.length; i++) {
                 resetGame(snakes[i]);
             }
-        }else{
-            if(!settingsDiv.classList.contains("hidden")){
+        } else {
+            if (!settingsDiv.classList.contains("hidden")) {
                 settingsDiv.classList.add("hidden");
             }
         }
@@ -156,6 +156,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 color: split[0]
             }
             newPlayer(info);
+            // } else if (e.data.startsWith("d")) {
+            //     let split = e.data.split(" ");
+            //     for (let i = 0; i < snakes.length; i++) {
+            //         if (split[1] == i + 1) {
+            //             console.log("delete");
+            //             snakes.splice(i, 1);
+            //         }
+            //     }
+            // } 
         } else {
             let data = e.data.split("-");
             let id = data[0] - 1;

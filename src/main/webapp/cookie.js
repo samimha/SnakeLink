@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
             cookieString = key + '=' + myCookies[key] + ';' + expiry + ";path=/";
             document.cookie = cookieString;
         }
-        alert(document.cookie);
+        //alert(document.cookie);
     });
 
 
