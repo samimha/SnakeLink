@@ -7,24 +7,22 @@
 </head>
 
 <body>
+
+    <!--Cookie input-->
+    <div>
+        User:  
+        <input type="text" id="user" class="input-field"> Color:
+        <input type="color" id="color" class="input-field">
+    </div>
+
     <div id="connect">
-        <input type="text" id="host-key">
+        <input type="text" id="host-key" class="input-field" placeholder="Game Number">
         <button id="connect-btn">Connect</button>
         <script src="cookie.js"></script>
     </div>
     <div id="connected" class="hidden">
         <h3 id="show-key"></h3>
     </div>
-
-    <!--Cookie input-->
-    <div>
-        User: <input type="text" id="user">
-        Color: <input type="color" id="color">
-    </div>
-    <div>
-        <button id="save">Save</button>
-    </div>
-
 
     <div class="grid-container">
         <div class="grid-item up">
@@ -61,9 +59,13 @@
             let id;
             let host;
             let wsUrl = document.location.host + "/SnakeLink/actions";
+
             //let wsUrl = document.location.host + "/actions"
             console.log(wsUrl);
             connectBtn.addEventListener('click', function (e) {
+                let color = document.querySelector('#color').value;
+                socket.send(id + "-" + color);
+
                 console.log(hostKey.value);
                 if (hostKey.value != null) {
                     host = hostKey.value;
@@ -79,14 +81,17 @@
                     showKey.textContent = "Game: " + host;
                     connectedDiv.classList.remove("hidden");
                     pressAny.classList.remove("hidden");
-                    player.textContent = "Player "+e.data;
+                    player.textContent = "Player " + e.data;
+                    //send snake color info
+                    //let color = document.querySelector('#color').value;
+                    //socket.send(id + "-" + color);
                 })
             }
             const pressAny = document.querySelector("#press-any");
-            function hide (){
-                if(pressAny.classList.contains("hidden")|| connectedDiv.classList.contains("hidden")){
+            function hide() {
+                if (pressAny.classList.contains("hidden") || connectedDiv.classList.contains("hidden")) {
                     return;
-                }else{
+                } else {
                     pressAny.classList.add("hidden")
                 }
             }
