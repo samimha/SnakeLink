@@ -142,7 +142,7 @@ button {
     border-radius: 2px;
     font-family: 'Orbitron', sans-serif;
 }
-#host-key{
+.input-field{
     border: 1px white solid;
     background-color: black;
     color: white;

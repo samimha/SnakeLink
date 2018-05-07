@@ -9,13 +9,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const playersList = document.querySelector("#players-list");
     let players = [];
     let player;
-    const colors = ["YELLOW","LIME","ORANGERED","AQUA","BLUE","FUCHSIA","DEEPPINK"];
-    
+    const colors = ["YELLOW", "LIME", "ORANGERED", "AQUA", "BLUE", "FUCHSIA", "DEEPPINK"];
+
     var context = canvas.getContext('2d');
-    let hostKey = getRandomInt(1000,9999);
+    let hostKey = getRandomInt(1000, 9999);
     socket.addEventListener("open", function (e) {
-        socket.send("host "+hostKey);
-        showKey.textContent = "Game "+hostKey;
+        socket.send("host " + hostKey);
+        showKey.textContent = "Game " + hostKey;
     });
     var grid = canvas.width / 25;
     class Snake {
@@ -72,9 +72,28 @@ document.addEventListener("DOMContentLoaded", function (event) {
             // draw apple
             context.fillStyle = 'red';
             context.fillRect(apple.x, apple.y, grid - 1, grid - 1);
+            
+            
             // draw snake
-            context.fillStyle = colors[i];
 
+            //dig cookies
+            myCookies = {};
+
+            //key-value-pairs
+            let kvp = document.cookie.split(';');
+
+            //rebuildimg the cookie list
+            for (let key in kvp) {
+                let cookie = kvp[key].split('=');
+                myCookies[cookie[0].trim()] = cookie[1];
+            }
+            
+            //set snake color
+            if(!(colors.indexOf(myCookies['color']) > -1)){
+                colors[i] = myCookies['color'];
+            }
+            context.fillStyle = colors[i];
+            
 
             snakes[i].cells.forEach(function (cell, index) {
                 context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
@@ -105,8 +124,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
         apple.x = getRandomInt(0, 25) * grid;
         apple.y = getRandomInt(0, 25) * grid;
     }
-    function newPlayer(info){
-        if(!players.includes(info.name)&&info.name!=0){
+    function newPlayer(info) {
+        if (!players.includes(info.name) && info.name != 0) {
             players.push(info.name);
             let li = document.createElement("li");
             let p = document.createElement("p");
@@ -125,12 +144,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
             return; // Do nothing if the event was already processed
         }
         console.log(e.data);
-        
+
         let data = e.data.split("-");
-        let id = data[0]-1;
+        let id = data[0] - 1;
         let info = {
-            name : data[0],
-            color : colors[id]
+            name: data[0],
+            color: colors[id]
         }
         newPlayer(info);
         switch (data[1]) {
