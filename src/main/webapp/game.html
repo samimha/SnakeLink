@@ -10,18 +10,24 @@
 <body>
     <div class="container">
         <h1>SnakeLink</h1>
+        <div id="settings-div">
+            <select id="size">
+                <option value=25>small</option>
+                <option value=30>medium</option>
+                <option value=35>huge</option>
+                <option value=50>to big</option>
+            </select>
+        </div>
+
         <h3 id="show-key"></h3>
         <div id="game-div">
             <canvas width="400" height="400" id="game"></canvas>
         </div>
         <div id="info">
             <h3>Players</h3>
-            <ul id="players-list">
-
-            </ul>
+            <ul id="players-list"></ul>
         </div>
     </div>
-    
 </body>
 
 </html>

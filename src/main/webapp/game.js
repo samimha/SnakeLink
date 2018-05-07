@@ -7,6 +7,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const canvas = document.querySelector('#game');
     const showKey = document.querySelector('#show-key');
     const playersList = document.querySelector("#players-list");
+    let select = document.querySelector("#size");
+    const settingsDiv = document.querySelector("#settings-div");
+    //const arena = document.querySelector("#arena");
     let players = [];
     let player;
     const colors = ["YELLOW", "LIME", "ORANGERED", "AQUA", "BLUE", "FUCHSIA", "DEEPPINK"];
@@ -17,7 +20,27 @@ document.addEventListener("DOMContentLoaded", function (event) {
         socket.send("host " + hostKey);
         showKey.textContent = "Game " + hostKey;
     });
-    var grid = canvas.width / 25;
+    let size = select.value;
+    select.addEventListener('change', function (e) {
+        if (snakes.length == 0) {
+            size = select.value;
+            canvas.width = 16 * size;
+            canvas.height = 16 * size;
+            grid = canvas.width / size;
+            //arena.classList.remove("hidden");
+            for (let i = 0; i < snakes.length; i++) {
+                resetGame(snakes[i]);
+            }
+        }else{
+            if(!settingsDiv.classList.contains("hidden")){
+                settingsDiv.classList.add("hidden");
+            }
+        }
+
+    });
+
+    let grid = canvas.width / size;
+
     class Snake {
         constructor(color) {
             this.x = grid * 10;
@@ -30,8 +53,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     };
     let snakes = [];
-    //snakes.push(new Snake());
-    //snakes.push(new Snake());
     var count = 0;
     var apple = {
         x: grid * 10 * 2,
@@ -73,19 +94,19 @@ document.addEventListener("DOMContentLoaded", function (event) {
             // draw apple
             context.fillStyle = 'red';
             context.fillRect(apple.x, apple.y, grid - 1, grid - 1);
-            
-            
+
+
             // draw snake
             context.fillStyle = snakes[i].color;
-            
+
 
             snakes[i].cells.forEach(function (cell, index) {
                 context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
                 // snake ate apple
                 if (cell.x === apple.x && cell.y === apple.y) {
                     snakes[i].maxCells++;
-                    apple.x = getRandomInt(0, 25) * grid;
-                    apple.y = getRandomInt(0, 25) * grid;
+                    apple.x = getRandomInt(0, size) * grid;
+                    apple.y = getRandomInt(0, size) * grid;
                 }
                 // check collision with all cells after this one (modified bubble sort)
                 for (var x = index + 1; x < snakes[i].cells.length; x++) {
@@ -105,8 +126,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
         snake.maxCells = 4;
         snake.dx = grid;
         snake.dy = 0;
-        apple.x = getRandomInt(0, 25) * grid;
-        apple.y = getRandomInt(0, 25) * grid;
+        apple.x = getRandomInt(0, size) * grid;
+        apple.y = getRandomInt(0, size) * grid;
     }
     function newPlayer(info) {
         if (!players.includes(info.name) && info.name != 0) {
@@ -138,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         } else {
             let data = e.data.split("-");
             let id = data[0] - 1;
-            
+
             switch (data[1]) {
                 case "down":
                     if (snakes[id].dy === 0) {
