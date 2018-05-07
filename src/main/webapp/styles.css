@@ -135,6 +135,43 @@ a:hover {
     color: black;
 }
 
+a.button{
+  background:#001f3f;
+  color:#fff;
+  border:none;
+  position:relative;
+  height:60px;
+  font-size:1.6em;
+  padding:0 2em;
+  cursor:pointer;
+  transition:800ms ease all;
+  outline:none;
+}
+a.button:hover{
+  background:#fff;
+  color:#1AAB8A;
+}
+a.button:before,a.button:after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background: #1AAB8A;
+  transition:400ms ease all;
+}
+a.button:after{
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+a.button:hover:before,a.button:hover:after{
+  width:100%;
+  transition:800ms ease all;
+}
+
 button {
     border: 1px white solid;
     background-color: black;
