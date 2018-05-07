@@ -4,13 +4,11 @@ body {
     background-image: url('images/bg.jpg');
     width: 100%;  
     min-height: 100vh;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+    background-size: cover;   
     position: relative;
     /*display: flex;*/
-    align-items: center;
-    justify-content: center;
+    /*align-items: center;*/
+    /*justify-content: center;*/
     color: aliceblue;
 }
 
