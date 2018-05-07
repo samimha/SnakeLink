@@ -1,11 +1,32 @@
 @import url('https://fonts.googleapis.com/css?family=Orbitron');
 body {
     font-family: 'Orbitron', sans-serif;
-    background: black;
+    background-image: url('images/bg.jpg');
+    width: 100%;  
+    min-height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative;
     /*display: flex;*/
     align-items: center;
     justify-content: center;
     color: aliceblue;
+}
+
+h1{
+    padding-bottom: 80px;
+}
+
+.container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 canvas {
@@ -114,6 +135,43 @@ a:hover {
     color: black;
 }
 
+a.button{
+  background:#001f3f;
+  color:#fff;
+  border:none;
+  position:relative;
+  height:60px;
+  font-size:1.6em;
+  padding:0 2em;
+  cursor:pointer;
+  transition:800ms ease all;
+  outline:none;
+}
+a.button:hover{
+  background:#fff;
+  color:#1AAB8A;
+}
+a.button:before,a.button:after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background: #1AAB8A;
+  transition:400ms ease all;
+}
+a.button:after{
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+a.button:hover:before,a.button:hover:after{
+  width:100%;
+  transition:800ms ease all;
+}
+
 button {
     border: 1px white solid;
     background-color: black;
@@ -121,7 +179,7 @@ button {
     border-radius: 2px;
     font-family: 'Orbitron', sans-serif;
 }
-#host-key{
+.input-field{
     border: 1px white solid;
     background-color: black;
     color: white;
