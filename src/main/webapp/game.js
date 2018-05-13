@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const playersList = document.querySelector("#players-list");
     let select = document.querySelector("#size");
     const settingsDiv = document.querySelector("#settings-div");
+    let listOfPlayers = playersList.childNodes;
     //const arena = document.querySelector("#arena");
     let players = [];
     let player;
@@ -42,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     let grid = canvas.width / size;
 
     class Snake {
-        constructor(color) {
+        constructor(name, color) {
             this.x = grid * 10;
             this.y = grid * 10;
             this.dx = grid;
@@ -50,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             this.cells = [];
             this.maxCells = 4;
             this.color = color;
+            this.name = name;
         }
     };
     let snakes = [];
@@ -117,6 +119,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     }
                 }
             });
+            for (let y = 0; y < listOfPlayers.length; y++) {
+                if(listOfPlayers[y].id == snakes[i].name){
+                    listOfPlayers[y].lastChild.textContent = snakes[i].maxCells;
+                }
+            }
         }
     }
     function resetGame(snake) {
@@ -134,14 +141,19 @@ document.addEventListener("DOMContentLoaded", function (event) {
             players.push(info.name);
             let li = document.createElement("li");
             let p = document.createElement("p");
+            let scoreP = document.createElement("p");
             let colBox = document.createElement("div");
             colBox.classList.add("color-box");
             colBox.style.backgroundColor = info.color;
             p.textContent = info.name;
+            li.id = info.name;
+            scoreP.classList.add("score");
+            scoreP.textContent = "0";
             li.appendChild(p);
             li.appendChild(colBox);
+            li.appendChild(scoreP);
             playersList.appendChild(li);
-            snakes.push(new Snake(info.color));
+            snakes.push(new Snake(info.name, info.color));
         }
     }
     socket.addEventListener("message", function (e) {

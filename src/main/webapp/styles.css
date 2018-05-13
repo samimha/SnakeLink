@@ -208,6 +208,9 @@ button {
     width: 20px;
     margin-left: 10px;
 }
+.score{
+    margin-left: 10px;
+}
 #players-list li{
     display: flex;
 }
